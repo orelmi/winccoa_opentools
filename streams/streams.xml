@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<panel version="14">
+ <properties>
+  <prop name="Name">
+   <prop name="en_US.utf8"></prop>
+  </prop>
+  <prop name="Size">500 400</prop>
+  <prop name="BackColor">_3DFace</prop>
+  <prop name="RefPoint">90 134</prop>
+  <prop name="InitAndTermRef">True</prop>
+  <prop name="SendClick">False</prop>
+  <prop name="RefFileName"></prop>
+  <prop name="DPI">96</prop>
+  <prop name="layoutAlignment">AlignNone</prop>
+  <prop name="layoutType">None</prop>
+ </properties>
+ <shapes>
+  <shape layerId="0" Name="PUSH_BUTTON1" shapeType="PUSH_BUTTON">
+   <properties>
+    <prop name="serialId">0</prop>
+    <prop name="Type"></prop>
+    <prop name="RefPoint">90 134</prop>
+    <prop name="Enable">True</prop>
+    <prop name="Visible">True</prop>
+    <prop name="ForeColor">_ButtonText</prop>
+    <prop name="BackColor">_Button</prop>
+    <prop name="TabOrder">0</prop>
+    <prop name="ToolTipText">
+     <prop name="en_US.utf8"></prop>
+    </prop>
+    <prop name="BorderStyle">Normal</prop>
+    <prop name="layoutAlignment">AlignNone</prop>
+    <prop name="snapMode">Point</prop>
+    <prop name="Font">
+     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
+    </prop>
+    <prop name="Location">90 100</prop>
+    <prop name="Size">141 81</prop>
+    <prop name="Text">
+     <prop name="en_US.utf8">RUN TESTS</prop>
+    </prop>
+   </properties>
+   <events>
+    <script name="Clicked" isEscaped="1"><![CDATA[#uses &quot;streams&quot;
+
+class Entity
+{
+  string obj;
+  int length;
+  int id;
+  
+  public Entity(string obj, int length, int id)
+  {
+    this.obj = obj;
+    this.length = length;
+    this.id = id;
+  }
+};
+
+class Mappers
+{
+  static int cnt = 0;
+  
+  static public int getLength(anytype obj)
+  {
+    return strlen((string) obj);
+  }
+  static public string toUpperCase(anytype obj)
+  {
+    return strtoupper((string) obj);
+  }
+  static public anytype mapToAnyType(anytype obj)
+  {
+    Entity e = Entity((string)obj, strlen((string) obj), cnt++);
+    return e;
+  }
+};
+
+class Filters
+{
+  static public bool beginWithA(anytype obj)
+  {
+    string s = (string) obj;
+    return (s[0] == &quot;a&quot;);
+  }
+};
+
+class Reducers
+{
+  static public anytype fruitSalad(anytype x, anytype y)
+  {
+    return x + y;
+  }
+};
+
+void runTests()
+{
+  dyn_anytype fruits = makeDynString(&quot;banana&quot;, &quot;orange&quot;, &quot;strawberry&quot;, &quot;ananas&quot;, &quot;peach&quot;, &quot;apple&quot;);
+  
+  StreamBuilder b;
+  Stream src = b.buildStream(fruits);  
+  DebugTN(&quot;--- toArray ---&quot;, src.toArray());
+
+  Stream mapped = src.map(Mappers::getLength);
+  DebugTN(&quot;--- Mappers::getLength ---&quot;, mapped.toArray());
+  
+  mapped = src.map(Mappers::toUpperCase);
+  DebugTN(&quot;--- Mappers::toUpperCase ---&quot;, mapped.toArray());
+  
+  IntStream ints = b.mapToInt(mapped);
+  DebugTN(&quot;--- sum of characaters ---&quot;, ints.sum());
+  
+  mapped = src.map(Mappers::mapToAnyType);
+  DebugTN(&quot;--- Mappers::mapToAnyType ---&quot;, mapped.toArray());
+  
+  Stream filtered = src.filter(Filters::beginWithA);
+  DebugTN(&quot;--- Filters::beginWithA ---&quot;, filtered.toArray());
+  
+  anytype reduced = src.reduce(Reducers::fruitSalad);
+  DebugTN(&quot;--- Reducers::fruitSalad ---&quot;, reduced);
+}
+
+main(mapping event)
+{
+  runTests();
+}]]></script>
+   </events>
+  </shape>
+ </shapes>
+</panel>
