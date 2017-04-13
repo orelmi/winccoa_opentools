@@ -73,10 +73,60 @@ anytype reduced = src.reduce(Reducers::fruitSalad);
 ["bananaorangestrawberryananaspeachapple"]
 ```
 
+Here's an example to groupby a stream
+```cpp
+class Entity
+{
+  string obj;
+  int length;
+  int id;
+  
+  public Entity(string obj, int length, int id)
+  {
+    this.obj = obj;
+    this.length = length;
+    this.id = id;
+  }
+  
+  static public string getIdentity(anytype obj)
+  {
+    Entity e = obj;
+    return e.obj;
+  }
+};
+
+Entity e1 =  Entity("aaa", 3, 1);
+Entity e2 =  Entity("aaa", 3, 2);
+Entity e3 =  Entity("bb", 2, 3);
+
+dyn_anytype entities = makeDynAnytype(e1, e2, e3);
+
+StreamBuilder b;
+Stream src = b.buildStream(entities);
+mapping group = src.groupBy(Entity::getIdentity);
+-------------
+[mapping 2 items
+        "aaa" : 	dyn_anytype 2 items
+            1: instance 0000018F79F62260 of class Entity
+                "obj" : "aaa"
+                "length" : 3
+                "id" : 1
+            2: instance 0000018F79F623A0 of class Entity
+                "obj" : "aaa"
+                "length" : 3
+                "id" : 2
+        "bb" : 	dyn_anytype 1 items
+            1: instance 0000018F79F62460 of class Entity
+                "obj" : "bb"
+                "length" : 2
+                "id" : 3
+]
+```
+
 
 ## TODO & IDEAS
 
-- [ ] Core : streams (GroupBy, Join, Concat, ...)
+- [ ] Core : streams (Join, Concat, ...)
 - [ ] Core : Unit Testing Framework
 - [ ] Gui : Trend extension
 - [ ] Gui : Alarm extension

@@ -1,47 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <panel version="14">
- <properties>
-  <prop name="Name">
-   <prop name="en_US.utf8"></prop>
-  </prop>
-  <prop name="Size">500 400</prop>
-  <prop name="BackColor">_3DFace</prop>
-  <prop name="RefPoint">90 134</prop>
-  <prop name="InitAndTermRef">True</prop>
-  <prop name="SendClick">False</prop>
-  <prop name="RefFileName"></prop>
-  <prop name="DPI">96</prop>
-  <prop name="layoutAlignment">AlignNone</prop>
-  <prop name="layoutType">None</prop>
- </properties>
- <shapes>
-  <shape layerId="0" Name="PUSH_BUTTON1" shapeType="PUSH_BUTTON">
-   <properties>
-    <prop name="serialId">0</prop>
-    <prop name="Type"></prop>
-    <prop name="RefPoint">90 134</prop>
-    <prop name="Enable">True</prop>
-    <prop name="Visible">True</prop>
-    <prop name="ForeColor">_ButtonText</prop>
-    <prop name="BackColor">_Button</prop>
-    <prop name="TabOrder">0</prop>
-    <prop name="ToolTipText">
-     <prop name="en_US.utf8"></prop>
-    </prop>
-    <prop name="BorderStyle">Normal</prop>
-    <prop name="layoutAlignment">AlignNone</prop>
-    <prop name="snapMode">Point</prop>
-    <prop name="Font">
-     <prop name="en_US.utf8">MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0</prop>
-    </prop>
-    <prop name="Location">90 100</prop>
-    <prop name="Size">141 81</prop>
-    <prop name="Text">
-     <prop name="en_US.utf8">RUN TESTS</prop>
-    </prop>
-   </properties>
-   <events>
-    <script name="Clicked" isEscaped="1"><![CDATA[#uses &quot;streams&quot;
+	<properties>
+		<prop name="Name">
+			<prop name="en_US.utf8"/>
+		</prop>
+		<prop name="Size">
+			500 400
+		</prop>
+		<prop name="BackColor">
+			_3DFace
+		</prop>
+		<prop name="RefPoint">
+			90 134
+		</prop>
+		<prop name="InitAndTermRef">
+			True
+		</prop>
+		<prop name="SendClick">
+			False
+		</prop>
+		<prop name="RefFileName"/>
+		<prop name="DPI">
+			96
+		</prop>
+		<prop name="layoutAlignment">
+			AlignNone
+		</prop>
+		<prop name="layoutType">
+			None
+		</prop>
+	</properties>
+	<shapes>
+		<shape layerId="0" Name="PUSH_BUTTON1" shapeType="PUSH_BUTTON">
+			<properties>
+				<prop name="serialId">
+					0
+				</prop>
+				<prop name="Type"/>
+				<prop name="RefPoint">
+					90 134
+				</prop>
+				<prop name="Enable">
+					True
+				</prop>
+				<prop name="Visible">
+					True
+				</prop>
+				<prop name="ForeColor">
+					_ButtonText
+				</prop>
+				<prop name="BackColor">
+					_Button
+				</prop>
+				<prop name="TabOrder">
+					0
+				</prop>
+				<prop name="ToolTipText">
+					<prop name="en_US.utf8"/>
+				</prop>
+				<prop name="BorderStyle">
+					Normal
+				</prop>
+				<prop name="layoutAlignment">
+					AlignNone
+				</prop>
+				<prop name="snapMode">
+					Point
+				</prop>
+				<prop name="Font">
+					<prop name="en_US.utf8">
+						MS Shell Dlg 2,-1,11,5,50,0,0,0,0,0
+					</prop>
+				</prop>
+				<prop name="Location">
+					90 100
+				</prop>
+				<prop name="Size">
+					141 81
+				</prop>
+				<prop name="Text">
+					<prop name="en_US.utf8">
+						RUN TESTS
+					</prop>
+				</prop>
+			</properties>
+			<events>
+				<script name="Clicked" isEscaped="1">
+					<![CDATA[#uses &quot;streams&quot;
 
 class Entity
 {
@@ -54,6 +99,12 @@ class Entity
     this.obj = obj;
     this.length = length;
     this.id = id;
+  }
+  
+  static public string getIdentity(anytype obj)
+  {
+    Entity e = obj;
+    return e.obj;
   }
 };
 
@@ -120,11 +171,27 @@ void runTests()
   DebugTN(&quot;--- Reducers::fruitSalad ---&quot;, reduced);
 }
 
+void runTests2()
+{
+  Entity e1 =  Entity(&quot;aaa&quot;, 3, 1);
+  Entity e2 =  Entity(&quot;aaa&quot;, 3, 2);
+  Entity e3 =  Entity(&quot;bb&quot;, 2, 3);
+  
+  dyn_anytype entities = makeDynAnytype(e1, e2, e3);
+  
+  StreamBuilder b;
+  Stream src = b.buildStream(entities);
+  mapping group = src.groupBy(Entity::getIdentity);
+  DebugTN(group);
+}
+
 main(mapping event)
 {
   runTests();
-}]]></script>
-   </events>
-  </shape>
- </shapes>
+  runTests2();
+}]]>
+				</script>
+			</events>
+		</shape>
+	</shapes>
 </panel>

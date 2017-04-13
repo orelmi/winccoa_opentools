@@ -77,6 +77,22 @@ class Stream
     return obj;
   }
   
+  public mapping groupBy(function_ptr keySelector)
+  {
+    mapping out;
+    for (int i = 1; i <= dynlen(this.array); i++)
+    {
+      anytype key = callFunction(keySelector, this.array[i]);
+      anytype value = this.array[i];
+      if (!mappingHasKey(out, key))
+      {
+        out[key] = makeDynAnytype();
+      }
+      dynAppend(out[key], value);
+    }
+    return out;
+  }
+  
   public dyn_anytype toArray()
   {
     return this.array;
