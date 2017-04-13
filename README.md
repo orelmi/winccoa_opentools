@@ -6,7 +6,17 @@ You can reuse parts of this software and include them in your WinCC OA Project w
 The project is based on two principles: not reinventing the wheel and reusing concepts that have been proven in other languages and frameworks.
 If you want to join the project as contributor, don't hesitate to contact me.
 
-## streams.ctl (Filter, Map, Reduce)
+# CTL Libraries
+
+* Streams
+* Chrono
+
+## streams.ctl (Filter, Map, Reduce, GroupBy)
+
+Usage
+```cpp
+#uses "streams"
+```
 
 We begin to create a collection of data and a stream over collection.
 ```cpp
@@ -123,10 +133,26 @@ mapping group = src.groupBy(Entity::getIdentity);
 ]
 ```
 
+## chrono.ctl (returns elapsed time in milliseconds)
+
+Usage
+```cpp
+#uses "chrono"
+```
+
+Call Chrono.elapsed() method to meter the time between creation of object and now.
+```cpp
+Chrono c1;
+runTests();
+runTests2();
+runTests3();
+DebugTN(c1.elapsed() + " ms");
+```
 
 ## TODO & IDEAS
 
-- [ ] Core : streams (Join, Concat, ...)
+- [X] Core : streams
+- [X] Core : chrono
 - [ ] Core : Unit Testing Framework
 - [ ] Gui : Trend extension
 - [ ] Gui : Alarm extension
