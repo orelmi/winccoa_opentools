@@ -8,6 +8,13 @@ If you want to join the project as contributor, don't hesitate to contact me.
 
 ## streams.ctl (Filter, Map, Reduce)
 
+We begin to create a collection of data and a stream over collection.
+```cpp
+dyn_anytype fruits = makeDynString("banana", "orange", "strawberry", "ananas", "peach", "apple");
+StreamBuilder b;
+Stream src = b.buildStream(fruits);  
+```
+
 Here’s an example to convert a stream and return integer values
 ```cpp
 class Mappers
@@ -18,9 +25,6 @@ class Mappers
   }
 };
 
-dyn_anytype fruits = makeDynString("banana", "orange", "strawberry", "ananas", "peach", "apple");
-StreamBuilder b;
-Stream src = b.buildStream(fruits);  
 Stream mapped = src.map(Mappers::getLength);
 mapped.toArray()
 -------------
@@ -33,6 +37,42 @@ mapped.toArray()
     6: 5
 ]
 ```
+
+Here’s an example to filter a stream
+```cpp
+class Filters
+{
+  static public bool beginWithA(anytype obj)
+  {
+    string s = (string) obj;
+    return (s[0] == "a");
+  }
+};
+
+Stream filtered = src.filter(Filters::beginWithA);
+filtered.toArray()
+-------------
+[dyn_anytype 2 items
+    1: "ananas"
+    2: "apple"
+]
+```
+
+Here’s an example to reduce a stream
+```cpp
+class Reducers
+{
+  static public anytype fruitSalad(anytype x, anytype y)
+  {
+    return x + y;
+  }
+};
+
+anytype reduced = src.reduce(Reducers::fruitSalad);
+-------------
+["bananaorangestrawberryananaspeachapple"]
+```
+
 
 ## TODO & IDEAS
 
