@@ -10,6 +10,7 @@ If you want to join the project as contributor, don't hesitate to contact me.
 
 * Streams
 * Chrono
+* Threading
 
 ## streams.ctl (Filter, Map, Reduce, GroupBy)
 
@@ -149,10 +150,45 @@ runTests3();
 DebugTN(c1.elapsed() + " ms");
 ```
 
+## threading.ctl (waitUntil)
+
+Usage
+```cpp
+#uses "threading"
+```
+
+Here’s an example using waitUntil to synchronize operations
+```cpp
+
+bool state = false;
+bool predicat()
+{
+  return state;
+}
+
+void worker(float duration)
+{
+  state = false;
+  delay(duration);
+  state = true;
+}
+
+
+startThread("worker", 0.5);
+bool res = Threading::waitUntil("predicat", 1., 0.01);
+----
+res = true
+  
+startThread("worker", 2);
+bool res = Threading::waitUntil("predicat", 1., 0.01);
+res = false
+```
+
 ## TODO & IDEAS
 
 - [X] Core : streams
 - [X] Core : chrono
+- [X] Core : threading/waituntil
 - [ ] Core : Unit Testing Framework
 - [ ] Gui : Trend extension
 - [ ] Gui : Alarm extension
