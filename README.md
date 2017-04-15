@@ -99,7 +99,7 @@ class Entity
     this.id = id;
   }
   
-  static public string getIdentity(anytype obj)
+  static public string keySelector(anytype obj)
   {
     Entity e = obj;
     return e.obj;
@@ -114,7 +114,7 @@ dyn_anytype entities = makeDynAnytype(e1, e2, e3);
 
 StreamBuilder b;
 Stream src = b.buildStream(entities);
-mapping group = src.groupBy(Entity::getIdentity);
+mapping group = src.groupBy(Entity::keySelector);
 -------------
 [mapping 2 items
         "aaa" : 	dyn_anytype 2 items
@@ -132,6 +132,40 @@ mapping group = src.groupBy(Entity::getIdentity);
                 "length" : 2
                 "id" : 3
 ]
+```
+
+another example with groupBy and a valueSelector
+```cpp
+class Row
+{
+  public string dp;
+  public time tim;
+  public float val;
+  
+  public Row (dyn_anytype obj)
+  {
+    this.dp = obj[1];
+    this.tim = obj[2];
+    this.val = obj[3];
+  }
+  
+  static public anytype valueSelector(anytype obj)
+  {
+    Row r = Row(obj);
+    return r;
+  }
+  static public anytype keySelector(anytype obj)
+  {
+    Row r = Row(obj);
+    return r.tim;
+  } 
+};
+
+dyn_dyn_anytype tab;
+dpQuery("SELECT '_original.._stime', '_original.._value' FROM '{xxx.yyy.*,xxx.zzz.*}' SORT BY 1 DESC", tab);
+StreamBuilder b;
+Stream src = b.buildStream(tab);
+src.groupBy(Row::keySelector, Row::valueSelector)
 ```
 
 ## chrono.ctl (returns elapsed time in milliseconds)

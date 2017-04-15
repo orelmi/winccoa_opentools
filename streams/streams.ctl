@@ -77,13 +77,13 @@ class Stream
     return obj;
   }
   
-  public mapping groupBy(function_ptr keySelector)
+  public mapping groupBy(function_ptr keySelector, function_ptr valueSelector = 0)
   {
     mapping out;
     for (int i = 1; i <= dynlen(this.array); i++)
     {
       anytype key = callFunction(keySelector, this.array[i]);
-      anytype value = this.array[i];
+      anytype value = valueSelector == 0 ? this.array[i] : callFunction(valueSelector, this.array[i]);
       if (!mappingHasKey(out, key))
       {
         out[key] = makeDynAnytype();
