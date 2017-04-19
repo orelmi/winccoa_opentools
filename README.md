@@ -11,6 +11,46 @@ If you want to join the project as contributor, don't hesitate to contact me.
 * Streams
 * Chrono
 * Threading
+* Python Style (inspired from Python libraries) : struct
+
+## struct.ctl (pack, unpack)
+
+Functions:
+* blob pack(string format, dyn_anytype args)
+* blob pack_args(string format, va_list va_args)
+* dyn_anytype unpack(string format, blob source)
+* int calcsize(string format)
+
+Please, see documentation of pack/unpack from https://docs.python.org/3.7/library/struct.html
+
+Format string specification is not fully implemented (uchar, ushort, float and double are missing)
+
+Usage
+```cpp
+#uses "struct"
+```
+
+This example serialize and deserialize from/to binary data
+```cpp
+  blob res = pack(">hhl", makeDynAnytype(1, 2, 3));
+  DebugTN(bloblen(res), res);
+  dyn_anytype st = unpack(">hhl", res);
+  DebugTN(st);
+```
+
+```
+> : pack as big-endian
+h : pack as short
+l : pack as long
+```
+
+The same example with pack_args function, pack_args accept va_list arguments
+```cpp
+  blob res = pack_args(">hhl", 1, 2, 3);
+  DebugTN(bloblen(res), res);
+  dyn_anytype st = unpack(">hhl", res);
+  DebugTN(st);
+```
 
 ## streams.ctl (Filter, Map, Reduce, GroupBy)
 
