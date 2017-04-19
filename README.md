@@ -263,9 +263,11 @@ res = false
 - [X] Core : streams
 - [X] Core : chrono
 - [X] Core : threading/waituntil
+- [ ] Python Style : struct, datetime/calendar, csv, urllib/requests
 - [ ] Core : Unit Testing Framework
 - [ ] Gui : Trend extension
 - [ ] Gui : Alarm extension
+- [ ] Documentation with sphinx
 
 ## License
 
