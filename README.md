@@ -265,6 +265,7 @@ res = false
 - [X] Core : threading/waituntil
 - [ ] Python Style : struct, datetime/calendar, csv, urllib/requests
 - [ ] Core : Unit Testing Framework
+- [ ] Network : websocket client/server
 - [ ] Gui : Trend extension
 - [ ] Gui : Alarm extension
 - [ ] Documentation with sphinx
