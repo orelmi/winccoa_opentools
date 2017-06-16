@@ -81,23 +81,23 @@ int calcsize(string format)
   return s;
 }
 
-dyn_anytype unpack(string format, blob source)
+dyn_anytype unpack(string format, blob source, int start = 0)
 {
   bool bigendian = false;
   dyn_anytype res;
     
-  if (calcsize(format) > bloblen(source))
+  if (calcsize(format) > bloblen(source) - start)
   {
     DebugTN("format is too long");
     return res;
   }  
-  if (calcsize(format) < bloblen(source))
+  if (calcsize(format) < bloblen(source) - start)
   {
     DebugTN("format is too short");
     return res;
   }  
   
-  int offset = 0;
+  int offset = start;
   for (int i = 0 ; i < strlen(format); i++)
   {
     char fmt = format[i];
