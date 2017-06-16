@@ -12,6 +12,7 @@ If you want to join the project as contributor, don't hesitate to contact me.
 * Chrono
 * Threading
 * Python Style (inspired from Python libraries) : struct
+* CSV
 
 ## struct.ctl (pack, unpack)
 
@@ -256,6 +257,29 @@ res = true
 startThread("worker", 2);
 bool res = Threading::waitUntil("predicat", 1., 0.01);
 res = false
+```
+
+
+## csv.ctl (CsvFormatter)
+
+Usage
+```cpp
+#uses "csv"
+```
+
+Here’s an example using CsvFormatter
+```cpp
+
+#uses "csv"
+
+main(mapping event)
+{
+  CsvFormatter formatter;
+  dyn_dyn_anytype data;
+  data[1] = makeDynString("AA", "BB", "CC", "DD");
+  data[2] = makeDynString(1, 2, 3, 4);
+  DebugTN(formatter.toPlainText(data));
+}
 ```
 
 ## TODO & IDEAS
